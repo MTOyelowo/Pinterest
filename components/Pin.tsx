@@ -2,6 +2,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import { Image, StyleSheet, Text, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import pins from "../assets/data/pins";
 
 const Pin = (props) => {
   const { id, title, image } = props.pin;

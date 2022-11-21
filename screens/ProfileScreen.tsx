@@ -1,29 +1,69 @@
-import { StyleSheet } from "react-native";
+import { Entypo, Feather } from "@expo/vector-icons";
+import { Image, ScrollView, StyleSheet } from "react-native";
+import pins from "../assets/data/pins";
 
 import EditScreenInfo from "../components/EditScreenInfo";
+import MasonryList from "../components/MasonryList";
 import { Text, View } from "../components/Themed";
 
 export default function ProfileScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profile Screen</Text>
-    </View>
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.icons}>
+          <Feather name="share" size={24} color="black" style={styles.icon} />
+          <Entypo
+            name="dots-three-horizontal"
+            size={24}
+            color="black"
+            style={styles.icon}
+          />
+        </View>
+        <Image
+          style={styles.image}
+          source={{
+            uri: "https://scontent.fabv2-1.fna.fbcdn.net/v/t1.18169-9/13690860_645727042245717_4777793521603083600_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeHWNe7-a4zfhdPJ82lqQY4kXkYq9AkJRr5eRir0CQlGvt1ehonVazvtxtfKBojZwm8DW6vmzpEgq5BeUG1vcihG&_nc_ohc=IXpGRc9Hb1UAX9ZXr-w&_nc_ht=scontent.fabv2-1.fna&oh=00_AfD34TbrMmBTJtVqh5gGJroASHjALphPatBU9hhay8_vyA&oe=63A2B681",
+          }}
+        />
+        <Text style={styles.title}>M.T. Oyelowo</Text>
+        <Text style={styles.subtitle}>123 Followers | 535 Folowings</Text>
+      </View>
+      <MasonryList pins={pins} />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    backgroundColor: "white",
+  },
+  header: {
     justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+  },
+  icons: {
+    flexDirection: "row",
+    alignSelf: "flex-end",
+    padding: 5,
+  },
+  icon: {
+    paddingHorizontal: 10,
+  },
+  image: {
+    width: 200,
+    aspectRatio: 1,
+    borderRadius: 200,
+    marginVertical: 10,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    margin: 10,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+  subtitle: {
+    color: "#181818",
+    fontSize: 14,
   },
 });
