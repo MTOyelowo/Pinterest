@@ -27,6 +27,7 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import PinScreen from "../screens/PinScreen";
+import CreatePinScreen from "../screens/CreatePinScreen";
 
 export default function Navigation({
   colorScheme,
@@ -89,37 +90,45 @@ function BottomTabNavigator() {
       initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarShowLabel: false,
+        headerStyle: {
+          borderBottomWidth: 1,
+          borderBottomColor: "lightgray",
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        headerTitleAlign: "center",
+        tabBarStyle: { shadowOpacity: 0, shadowColor: "white" },
       }}
     >
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
-        options={({ navigation }: RootTabScreenProps<"Home">) => ({
+        options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Modal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="home" color={color} size={30} />
           ),
-        })}
+        }}
+      />
+      <BottomTab.Screen
+        name="CreatePin"
+        component={CreatePinScreen}
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="plus" color={color} size={30} />
+          ),
+        }}
       />
       <BottomTab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
           title: "Profile",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="user" color={color} size={30} />
+          ),
         }}
       />
     </BottomTab.Navigator>
