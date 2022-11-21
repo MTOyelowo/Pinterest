@@ -89,6 +89,7 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
+        tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarShowLabel: false,
         headerStyle: {
@@ -96,7 +97,12 @@ function BottomTabNavigator() {
           borderBottomColor: "lightgray",
           elevation: 0,
           shadowOpacity: 0,
+          height: 70,
         },
+        headerTitleStyle: {
+          fontWeight: "800",
+        },
+        headerTitleContainerStyle: { paddingBottom: 10 },
         headerTitleAlign: "center",
         tabBarStyle: { shadowOpacity: 0, shadowColor: "white" },
       }}
@@ -115,7 +121,7 @@ function BottomTabNavigator() {
         name="CreatePin"
         component={CreatePinScreen}
         options={{
-          title: "Home",
+          title: "Create Pin",
           tabBarIcon: ({ color }) => (
             <FontAwesome name="plus" color={color} size={30} />
           ),
