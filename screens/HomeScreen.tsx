@@ -1,18 +1,36 @@
-import { StyleSheet } from "react-native";
-import pins from "../assets/data/pins";
-import MasonryList from "../components/MasonryList";
-import { RootTabScreenProps } from "../types";
+import { useNhostClient } from "@nhost/react";
+import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
-export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
+import MasonryList from "../components/MasonryList";
+
+export default function HomeScreen() {
+  const nhost = useNhostClient();
+
+  const [pins, setPins] = useState([]);
+
+  const fetchPins = async () => {
+    const response = await nhost.graphql.request(`
+      query MyQuery {
+        pins {
+          created_at
+          id
+          image
+          title
+          user_id
+        }
+      }
+    `);
+    if (response.error) {
+      Alert.alert("Error Fetching Pins");
+    } else {
+      setPins(response.data.pins);
+    }
+  };
+
+  useEffect(() => {
+    fetchPins();
+  }, []);
+
   return <MasonryList pins={pins} />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    padding: 10,
-  },
-  column: {
-    flex: 1,
-  },
-});
