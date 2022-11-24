@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 import MasonryList from "../components/MasonryList";
-
+// Version 1.0
 export default function HomeScreen() {
   const nhost = useNhostClient();
 
