@@ -1,14 +1,61 @@
 import { Entypo, Feather } from "@expo/vector-icons";
-import { Image, Pressable, ScrollView, StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 import pins from "../assets/data/pins";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import MasonryList from "../components/MasonryList";
 import { Text, View } from "../components/Themed";
-import { useSignOut } from "@nhost/react";
+import { useNhostClient, useSignOut, useUserId } from "@nhost/react";
+import { useEffect, useState } from "react";
+
+const GET_USER_QUERY = `
+query MyQuery($id: uuid!) {
+  user(id: $id) {
+    id
+    avatarUrl
+    displayName
+    pins {
+      id
+      image
+      title
+      created_at
+    }
+  }
+}
+`;
 
 export default function ProfileScreen() {
+  const [user, setUser] = useState();
+
+  const nhost = useNhostClient();
   const { signOut } = useSignOut();
+
+  const userId = useUserId();
+
+  const fetchUserData = async () => {
+    const result = await nhost.graphql.request(GET_USER_QUERY, { id: userId });
+    console.log(result);
+    if (result.error) {
+      Alert.alert("Error fetching the user");
+    } else {
+    }
+    setUser(result.data.user);
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  if (!user) {
+    return <ActivityIndicator />;
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -40,13 +87,13 @@ export default function ProfileScreen() {
         <Image
           style={styles.image}
           source={{
-            uri: "https://scontent.fabv2-1.fna.fbcdn.net/v/t1.18169-9/13690860_645727042245717_4777793521603083600_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeHWNe7-a4zfhdPJ82lqQY4kXkYq9AkJRr5eRir0CQlGvt1ehonVazvtxtfKBojZwm8DW6vmzpEgq5BeUG1vcihG&_nc_ohc=IXpGRc9Hb1UAX9ZXr-w&_nc_ht=scontent.fabv2-1.fna&oh=00_AfD34TbrMmBTJtVqh5gGJroASHjALphPatBU9hhay8_vyA&oe=63A2B681",
+            uri: user.avatarUrl,
           }}
         />
-        <Text style={styles.title}>M.T. Oyelowo</Text>
+        <Text style={styles.title}>{user.displayName}</Text>
         <Text style={styles.subtitle}>123 Followers | 535 Folowings</Text>
       </View>
-      <MasonryList pins={pins} />
+      <MasonryList pins={user.pins} onRefresh={fetchUserData} />
     </ScrollView>
   );
 }
