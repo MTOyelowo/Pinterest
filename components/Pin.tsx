@@ -2,20 +2,13 @@ import { AntDesign } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import { Image, StyleSheet, Text, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import pins from "../assets/data/pins";
+import { useNhostClient } from "@nhost/react";
+import RemoteImage from "./RemoteImage";
 
 const Pin = (props) => {
   const { id, title, image } = props.pin;
 
-  const [aspectRatio, setAspectRatio] = useState(1);
-
   const navigation = useNavigation();
-
-  useEffect(() => {
-    if (image) {
-      Image.getSize(image, (width, height) => setAspectRatio(width / height));
-    }
-  }, [image]);
 
   const onLike = () => {};
 
@@ -26,12 +19,7 @@ const Pin = (props) => {
   return (
     <Pressable onPress={goToPinPage} style={styles.pin}>
       <View>
-        <Image
-          style={[styles.image, { aspectRatio: aspectRatio }]}
-          source={{
-            uri: image,
-          }}
-        />
+        <RemoteImage fileId={image} />
         <Pressable onPress={onLike} style={styles.heartBtn}>
           <AntDesign name="hearto" size={16} color="black" />
         </Pressable>
@@ -47,10 +35,6 @@ const styles = StyleSheet.create({
   pin: {
     width: "100%",
     padding: 4,
-  },
-  image: {
-    width: "100%",
-    borderRadius: 15,
   },
   heartBtn: {
     backgroundColor: "#D2CFD4",

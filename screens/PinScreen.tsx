@@ -8,6 +8,7 @@ import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useNhostClient } from "@nhost/react";
+import RemoteImage from "../components/RemoteImage";
 
 const GET_PIN_QUERY = `
 query MyQuery ($id: uuid!) {
@@ -27,7 +28,6 @@ query MyQuery ($id: uuid!) {
 `;
 
 const PinScreen = () => {
-  const [ratio, setRatio] = useState(1);
   const [pin, setPin] = useState<any>(null);
 
   const nhost = useNhostClient();
@@ -51,12 +51,6 @@ const PinScreen = () => {
     fetchPin(pinId);
   }, [pinId]);
 
-  useEffect(() => {
-    if (pin?.image) {
-      Image.getSize(pin.image, (width, height) => setRatio(width / height));
-    }
-  }, [pin]);
-
   const goBack = () => {
     navigation.goBack();
   };
@@ -69,10 +63,7 @@ const PinScreen = () => {
     <SafeAreaView style={{ backgroundColor: "black" }}>
       <StatusBar style="light" />
       <View style={styles.root}>
-        <Image
-          source={{ uri: pin.image }}
-          style={[styles.image, { aspectRatio: ratio }]}
-        />
+        <RemoteImage fileId={pin.image} />
         <Text style={styles.title}>{pin.title}</Text>
       </View>
       <Pressable

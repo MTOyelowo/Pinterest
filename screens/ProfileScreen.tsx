@@ -1,23 +1,41 @@
 import { Entypo, Feather } from "@expo/vector-icons";
-import { Image, ScrollView, StyleSheet } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet } from "react-native";
 import pins from "../assets/data/pins";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import MasonryList from "../components/MasonryList";
 import { Text, View } from "../components/Themed";
+import { useSignOut } from "@nhost/react";
 
 export default function ProfileScreen() {
+  const { signOut } = useSignOut();
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.icons}>
-          <Feather name="share" size={24} color="black" style={styles.icon} />
-          <Entypo
-            name="dots-three-horizontal"
-            size={24}
-            color="black"
-            style={styles.icon}
-          />
+          <View style={{ flexDirection: "row" }}>
+            <Entypo
+              name="dots-three-horizontal"
+              size={24}
+              color="black"
+              style={styles.icon}
+            />
+            <Feather name="share" size={24} color="black" style={styles.icon} />
+          </View>
+          <View style={{ alignSelf: "flex-end" }}>
+            <Pressable onPress={signOut}>
+              <Text
+                style={{
+                  color: "#2093FF",
+                  fontSize: 17,
+                  fontWeight: "600",
+                }}
+              >
+                Sign Out
+              </Text>
+            </Pressable>
+          </View>
         </View>
         <Image
           style={styles.image}
@@ -44,9 +62,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   icons: {
+    width: "100%",
     flexDirection: "row",
-    alignSelf: "flex-end",
     padding: 5,
+    justifyContent: "space-between",
   },
   icon: {
     paddingHorizontal: 10,
